@@ -1,0 +1,130 @@
+script2:
+#!/bin/bash
+
+
+read -a numbers
+largest=${numbers[0]}
+smallest=${numbers[0]}
+for num in ${numbers[@]}
+do
+ if [[ $num -gt $largest ]]
+  then
+    largest=$num
+  fi
+  if [[ $num -lt $smallest ]]
+  then
+    smallest=$num
+  fi
+done
+
+
+echo "The largest number is $largest"
+echo "The smallest number is $smallest"
+
+
+script3:
+
+#!/bin/bash
+
+
+IP=$1
+USER=$2
+PASS=$3
+
+
+if ping -c 1 -t 1 $IP &> /dev/null
+then 
+  sshpass -p $PASS scp /etc/passwd $USER@$IP:/home/user
+
+  echo "File sent successfully"
+else
+  
+  echo "Server is not accessible"
+fi
+
+
+script4:
+
+#!/bin/bash
+
+for ((i=5; i<=50; i++)); do
+    echo $i
+done
+
+script5:
+#!/bin/bash
+
+OUTPUT_DIR="/path/to/your/output/directory"
+mkdir -p "$OUTPUT_DIR"
+CURRENT_DATE=$(date +%Y-%m-%d)
+cut -d: -f1,3 /etc/passwd > "$OUTPUT_DIR/passwd_fields_$CURRENT_DATE.txt"
+find "$OUTPUT_DIR" -type f -name "passwd_fields_*" -mtime +2 -exec rm {} \;
+
+script6:
+#!/bin/bash
+
+SRCDIR="/home/<username>/Documents/my_work/"
+DESTDIR="/home/<username>/Backups/"
+FILENAME="ug-$(date +%-Y%-m%-d)-$(date +%-T).tgz"
+
+tar --create --gzip --file="$DESTDIR$FILENAME" "$SRCDIR"
+
+
+script7:
+
+#!/bin/bash
+
+
+INPUT_FILE="<input_file>"
+
+
+OUTPUT_FILE="<output_file>"
+
+
+get_hostname() {
+    local ip="$1"
+    local hostname
+    hostname=$(host "$ip" | awk '{print $NF}')
+    echo "$hostname"
+}
+
+
+while read -r ip; do
+    hostname=$(get_hostname "$ip")
+
+  
+    if ping -c 1 "$ip" &> /dev/null; then
+        echo "$(date '+%Y-%m-%d %H:%M:%S') $hostname ($ip) is UP" >> "$OUTPUT_FILE"
+    else
+        echo "$(date '+%Y-%m-%d %H:%M:%S') $hostname ($ip) is DOWN" >> "$OUTPUT_FILE"
+    fi
+done < "$INPUT_FILE"
+
+
+
+
+
+
+
+#!/bin/bash
+
+
+IP="$1"
+
+
+ping_result=$(ping -c 1 "$IP")
+
+
+ip_address=$(echo "$ping_result" | grep -oP '(\d+\.\d+\.\d+\.\d+)')
+packet_loss=$(echo "$ping_result" | grep -oP '\d+(?=% packet loss)')
+average_rtt=$(echo "$ping_result" | grep -oP 'time=\d+\.\d+' | cut -d= -f2)
+
+
+echo "IP: $ip_address"
+echo "Packet Loss: $packet_loss%"
+echo "Average RTT: $average_rtt ms"
+
+
+
+
+
